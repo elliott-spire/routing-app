@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+    <title> Routing API Visualizer </title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- https://vega.github.io/vega/ -->
+    <script type="text/javascript" src="lib/vega-5.js"></script>
+    <script type="text/javascript" src="lib/vega-lite-4.js"></script>
+    <script type="text/javascript" src="lib/vega-embed-6.js"></script>
+    <!-- local libs -->
+    <link rel="stylesheet" type="text/css" href="lib/openlayers.css" />
+    <script type="text/javascript" src="lib/openlayers.js"></script>
+    <!-- jQuery Libraries for Datetime selection -->
+    <link rel="stylesheet" type="text/css" href="lib/jquery.datetimepicker.min.css" />
+    <script type="text/javascript" src="lib/jquery-3.4.1.slim.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.datetimepicker.full.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/weather/weatherstats.css" />
+    <link rel="stylesheet" type="text/css" href="css/weather/toggleswitch.css" />
+    <!-- Custom Weather Stats JS -->
+    <script type="text/javascript" src="js/weather/vega_spec.js"></script>
+    <script type="text/javascript" src="js/weather/parse_data.js"></script>
+    <script type="text/javascript" src="js/weather/get_data.js"></script>
+    <script type="text/javascript" src="js/weather/toggle_forecast.js"></script>
+    <!-- Custom JS -->
+    <script type="text/javascript" src="js/mapmaker.js"></script>
+    <script type="text/javascript" src="js/routing.js"></script>
+    <script type="text/javascript" src="js/on_load.js"></script>
+  </head>
+  <body>
+    <!------------------------------>
+    <!-- Token Submit Form Popup  -->
+    <!------------------------------>
+    <div id="tokenPopup">
+      <h1 id="token_title">Spire API Token</h1>
+      <form id="tokenForm">
+        <input id="token" type="password" placeholder="Please Enter Your Token Here" />
+        <input id="submitToken" type="submit" />
+      </form>
+    </div>
+    <!-- weather stats popup  -->
+    <div id="grayPageOverlay"></div>
+    <div id="weatherStats">
+      <h1 id="forecast_title">Spire Weather Forecast</h1>
+      <h4 id="forecast_point_label"></h4>
+      <button class="remove" onclick='
+        document.getElementById("weatherStats").style.display = "none";
+        document.getElementById("grayPageOverlay").style.display = "none";
+        document.getElementById("day").className = "";
+        document.getElementById("week").className = "selected";
+        document.getElementById("forecast_switch").checked = false;
+        '>
+        X
+      </button>
+      <div id="toggle_forecast">
+        <span id="week" class="selected">Week</span>
+        <div class="switch" title="Switch Forecast">
+          <input id="forecast_switch" type="checkbox" class="switch-input">
+          <label for="toggle"><i></i></label>
+          <!-- Circle Light -->
+          <!-- <span></span> -->
+        </div>
+        <span id="day">Day</span>
+      </div>
+      <div id="graphs">
+        <!-- from maritime bundle -->
+        <div id="wave_height"></div>
+        <div id="ocean_currents_speed"></div>
+        <div id="sea_surface_temp"></div>
+        <div id="ocean_currents_direction"></div>
+        <!-- from basic bundle -->
+        <div id="wind_speed"></div>
+        <div id="wind_direction"></div>
+        <div id="wind_gust"></div>
+        <div id="precip"></div>
+        <div id="air_temp"></div>
+        <div id="dew_point_temp"></div>
+        <div id="rel_hum"></div>
+        <div id="air_press_sea_level"></div>
+      </div>
+    </div>
+    <!-- TOP OF APP -->
+    <div id="routes"></div>
+    <br>
+    <div id="buttons">
+      <button id="addroute" onclick="addRoute()">Add Route</button>
+      <button id="requestroutes" class="submit" onclick="requestAllRoutes()">Request Route(s)</button>
+      <br>
+    </div>
+    <br>
+    <hr> <!-- "horizontal rule" dividing input section from output section -->
+    <br>
+    <div id="mapContainer">
+      <button id="downloadMap">Download Map Image</button>
+      <button id="selectForecastToggle">Select Point for Weather Forecast</button>
+      <span id="mousePosition"></span>
+      <!-- the map to show the area -->
+      <div id="map" class="map"></div>
+      <script>
+        document.getElementById("map").addEventListener('click', function(evt){
+          if (ENABLE_FORECAST == true) {
+            // set cursor to spinning wheel until forecast is retrieved
+            document.getElementById('forecast_switch').style.cursor = 'progress';
+            document.body.style.cursor = 'progress';
+            var coordinate = document.getElementById("mousePosition").textContent;
+            coordinate = coordinate.replace(" ","").split(",")
+            getPointForecast(coordinate, "medium_range_std_freq");
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>
