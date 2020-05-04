@@ -120,7 +120,7 @@ function addRoute() {
         <button class='remove' onclick='deleteRoute(this)'>X</button>\
         <div class='params'>\
           <span><b>Start Port <i>UN/LOCODE</i>:</b> <input class='startport' type='text' value='FRMRS'></span><br>\
-          <span><b>End Port <i>UN/LOCODE</i>:</b> <input class='endport' type='text' value='CAVAN'></span><br>\
+          <span><b>End Port <i>UN/LOCODE</i>:</b> <input class='endport' type='text' value='USNYC'></span><br>\
           <span><b>Start Latitude</b> <i>(optional)</i>: <input class='latitude' type='number' min='-90' max='90'></span><br>\
           <span><b>Start Longitude</b> <i>(optional)</i>: <input class='longitude' type='number' min='-180' max='180'></span><br>\
           <span><b>Suez Canal</b> <i>(1=Yes || 0=No)</i>: <input class='suez' type='number' min='0' max='1' value='1'></span><br>\
